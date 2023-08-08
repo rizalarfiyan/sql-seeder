@@ -12,12 +12,10 @@ import (
 )
 
 type Environment struct {
-	Dialect       string `yaml:"dialect"`
-	DataSource    string `yaml:"datasource"`
-	Dir           string `yaml:"dir"`
-	TableName     string `yaml:"table"`
-	SchemaName    string `yaml:"schema"`
-	IgnoreUnknown bool   `yaml:"ignoreunknown"`
+	Dialect    string `yaml:"dialect"`
+	DataSource string `yaml:"datasource"`
+	Dir        string `yaml:"dir"`
+	TableName  string `yaml:"table"`
 }
 
 type Config interface {
@@ -73,6 +71,10 @@ func (c *config) LoadEnv() error {
 		return errors.New("no dialect specified")
 	}
 
+	if env.TableName == "" {
+		return errors.New("no table name specified")
+	}
+
 	if env.DataSource == "" {
 		return errors.New("no data source specified")
 	}
@@ -83,10 +85,6 @@ func (c *config) LoadEnv() error {
 		env.Dir = "seeders"
 	}
 
-	//? TODO
-	// set table name
-	// set schema name
-	// set ignore unkown
 	c.env = env
 
 	if _, err := os.Stat(env.Dir); os.IsNotExist(err) {

@@ -121,7 +121,6 @@ func NewSeeder(env utils.Environment, db *sql.DB) error {
 
 func InputSelectPrompt(promptText string) (int, error) {
 	readerDb := bufio.NewReader(os.Stdin)
-	fmt.Print(promptText)
 	text, _ := readerDb.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 
