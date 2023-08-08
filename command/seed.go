@@ -112,15 +112,17 @@ func NewSeeder(env utils.Environment, db *sql.DB) error {
 	ctx := context.Background()
 	query := string(bytes[:reader])
 	_, err = db.ExecContext(ctx, query)
-	if err != err {
+	if err != nil {
 		return err
 	}
 
+	fmt.Println("Success seed to database")
 	return nil
 }
 
 func InputSelectPrompt(promptText string) (int, error) {
 	readerDb := bufio.NewReader(os.Stdin)
+	fmt.Print(promptText)
 	text, _ := readerDb.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 

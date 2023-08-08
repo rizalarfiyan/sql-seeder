@@ -15,7 +15,6 @@ type Environment struct {
 	Dialect    string `yaml:"dialect"`
 	DataSource string `yaml:"datasource"`
 	Dir        string `yaml:"dir"`
-	TableName  string `yaml:"table"`
 }
 
 type Config interface {
@@ -69,10 +68,6 @@ func (c *config) LoadEnv() error {
 
 	if env.Dialect == "" {
 		return errors.New("no dialect specified")
-	}
-
-	if env.TableName == "" {
-		return errors.New("no table name specified")
 	}
 
 	if env.DataSource == "" {

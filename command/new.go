@@ -98,5 +98,6 @@ func NewFileSeeder(name string, env utils.Environment) error {
 	}
 	defer file.Close()
 
+	fmt.Println("Success create new file seed: " + fileName)
 	return nil
 }
