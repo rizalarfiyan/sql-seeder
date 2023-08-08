@@ -20,17 +20,12 @@ type Environment struct {
 	IgnoreUnknown bool   `yaml:"ignoreunknown"`
 }
 
-type EnvConnection struct {
-	Connection *sql.DB
-	Dialect    string
-}
-
 type Config interface {
 	SetConfigFlags(f *flag.FlagSet)
 	ReadConfig() (map[string]*Environment, error)
 	LoadEnv() error
 	GetEnv() (*Environment, error)
-	GetConnection(env *Environment) (*EnvConnection, error)
+	GetConnection(env *Environment) (*sql.DB, error)
 }
 
 type config struct {
@@ -109,7 +104,7 @@ func (c *config) GetEnv() (*Environment, error) {
 	return c.env, nil
 }
 
-func (c *config) GetConnection(env *Environment) (*EnvConnection, error) {
+func (c *config) GetConnection(env *Environment) (*sql.DB, error) {
 	db, err := sql.Open(env.Dialect, env.DataSource)
 	if err != nil {
 		return nil, fmt.Errorf("cannot connect to database: %w", err)
@@ -120,8 +115,5 @@ func (c *config) GetConnection(env *Environment) (*EnvConnection, error) {
 		return nil, fmt.Errorf("unsupported dialect: %s", env.Dialect)
 	}
 
-	return &EnvConnection{
-		Connection: db,
-		Dialect:    env.Dialect,
-	}, nil
+	return db, nil
 }
